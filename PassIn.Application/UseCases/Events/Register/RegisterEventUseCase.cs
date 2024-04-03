@@ -5,11 +5,10 @@ using PassIn.Infrastructure.Entities;
 
 namespace PassIn.Application.UseCases.Events.Register;
 
-public class RegisterEventUseCase
+public class RegisterEventUseCase(PassInDbContext context)
 {
     public ResponseRegisterEventJson Execute(RequestEventJson request)
     {
-        var context = new PassInDbContext();
         var entity = new Event
         {
             Title = request.Title,

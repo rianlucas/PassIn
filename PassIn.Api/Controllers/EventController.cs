@@ -3,22 +3,22 @@ using PassIn.Application.UseCases.Events.GetById;
 using PassIn.Application.UseCases.Events.Register;
 using PassIn.Communication.Requests;
 using PassIn.Communication.Responses;
-using PassIn.Infrastructure;
 
 namespace PassIn.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[ProducesResponseType(typeof(ResponseRegisterEventJson), StatusCodes.Status201Created)]
-[ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
-public class EventController : ControllerBase
+public class EventController(
+        GetEventByIdUseCase getEventByIdUseCase,
+        RegisterEventUseCase registerEventUseCase
+        ): ControllerBase
 {
-
     [HttpPost]
+    [ProducesResponseType(typeof(ResponseRegisterEventJson), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
     public IActionResult Register([FromBody] RequestEventJson request)
     {
-        var useCase = new RegisterEventUseCase();
-        var response = useCase.Execute(request);
+        var response = registerEventUseCase.Execute(request);
         
         return Created(string.Empty, response);
     }
@@ -29,11 +29,9 @@ public class EventController : ControllerBase
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public IActionResult GetById(Guid id)
     {
-        var useCase = new GetEventByIdUseCase();
+        var response = getEventByIdUseCase.Execute(id);
         
-        var response = useCase.Execute(id);
-        
-        return Ok();
+        return Ok(response);
     }
 }
 

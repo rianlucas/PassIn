@@ -3,12 +3,11 @@ using PassIn.Infrastructure;
 
 namespace PassIn.Application.UseCases.Events.GetById;
 
-public class GetEventByIdUseCase
+public class GetEventByIdUseCase(PassInDbContext context)
 {
     public ResponseEventJson Execute(Guid id)
     {
-        var dbContext = new PassInDbContext();
-        var entity = dbContext.Events.FirstOrDefault(e => e.Id == id);
+        var entity = context.Events.FirstOrDefault(e => e.Id == id);
         
         if(entity is null) 
             throw new ArgumentException("Event not found.");

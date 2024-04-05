@@ -1,4 +1,5 @@
 using PassIn.Communication.Responses;
+using PassIn.Exceptions;
 using PassIn.Infrastructure;
 
 namespace PassIn.Application.UseCases.Events.GetById;
@@ -10,7 +11,7 @@ public class GetEventByIdUseCase(PassInDbContext context)
         var entity = context.Events.FirstOrDefault(e => e.Id == id);
         
         if(entity is null) 
-            throw new ArgumentException("Event not found.");
+            throw new NotFoundException("Event not found.");
         
         
         return new ResponseEventJson

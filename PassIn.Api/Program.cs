@@ -1,3 +1,4 @@
+using PassIn.Api.Filters;
 using PassIn.Application.UseCases.Events.GetById;
 using PassIn.Application.UseCases.Events.Register;
 using PassIn.Infrastructure;
@@ -11,6 +12,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<GetEventByIdUseCase>();
 builder.Services.AddScoped<RegisterEventUseCase>();
 builder.Services.AddSingleton<PassInDbContext>();
+
+builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
 var app = builder.Build();
 
